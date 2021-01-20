@@ -2,7 +2,10 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
+            <loc>http://gimmetm.github.com/categories/</loc><lastmod>2021-01-20T21:58:26&#43;08:00</lastmod></url><url>
+            <loc>http://gimmetm.github.com/categories/etc/</loc><lastmod>2021-01-20T21:58:26&#43;08:00</lastmod></url><url>
+            <loc>http://gimmetm.github.com/</loc><lastmod>2021-01-20T21:58:26&#43;08:00</lastmod></url><url>
+            <loc>http://gimmetm.github.com/posts/</loc><lastmod>2021-01-20T21:58:26&#43;08:00</lastmod></url><url>
+            <loc>http://gimmetm.github.com/posts/first_post/</loc><lastmod>2021-01-20T21:58:26&#43;08:00</lastmod></url><url>
             <loc>http://gimmetm.github.com/about/</loc><priority>0</priority></url><url>
-            <loc>http://gimmetm.github.com/categories/</loc></url><url>
-            <loc>http://gimmetm.github.com/</loc></url><url>
             <loc>http://gimmetm.github.com/tags/</loc></url></urlset>

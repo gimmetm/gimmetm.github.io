@@ -1,11 +1,9 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>GimmeTM&#39;s Blog</title>
-        <link>http://gimmetm.github.com/</link>
-        <description>GimmeTM&#39;s Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</lastBuildDate>
-            <atom:link href="http://gimmetm.github.com/index.xml" rel="self" type="application/rss+xml" />
-        <item>
+        <title>All Posts - GimmeTM&#39;s Blog</title>
+        <link>http://gimmetm.github.com/posts/</link>
+        <description>All Posts | GimmeTM&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</lastBuildDate><atom:link href="http://gimmetm.github.com/posts/" rel="self" type="application/rss+xml" /><item>
     <title>첫 포스트</title>
     <link>http://gimmetm.github.com/posts/first_post/</link>
     <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>

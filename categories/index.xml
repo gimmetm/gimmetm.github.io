@@ -3,5 +3,12 @@
         <title>Categories - Category - GimmeTM&#39;s Blog</title>
         <link>http://gimmetm.github.com/categories/</link>
         <description>Categories - Category - GimmeTM&#39;s Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="http://gimmetm.github.com/categories/" rel="self" type="application/rss+xml" /></channel>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</lastBuildDate><atom:link href="http://gimmetm.github.com/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>etc</title>
+    <link>http://gimmetm.github.com/categories/etc/</link>
+    <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>http://gimmetm.github.com/categories/etc/</guid>
+    <description><![CDATA[]]></description>
+</item></channel>
 </rss>
