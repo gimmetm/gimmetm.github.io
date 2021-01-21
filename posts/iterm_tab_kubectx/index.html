@@ -66,7 +66,7 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
             <a href="/" title="Gimme™ Devlog" class="header-logo">Gimme™ Devlog</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
                     <i class="fas fa-adjust fa-fw"></i>
                 </a>
             </div>
@@ -82,7 +82,7 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
                 <span></span><span></span><span></span>
             </div>
         </div>
-        <div class="menu" id="menu-mobile"><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
                 <i class="fas fa-adjust fa-fw"></i>
             </a></div>
     </div>
@@ -145,30 +145,30 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
 </ul>
 <h2 id="1-zshrc-추가">1. <code>.zshrc</code> 추가</h2>
 <h3 id="11-session-id-생성">1.1 Session ID 생성</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#66d9ef">if</span> ! <span style="color:#f92672">[</span> $TERM_SESSION_ID <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-  export TERM_SESSION_ID<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>uuidgen<span style="color:#e6db74">`</span>
-<span style="color:#66d9ef">fi</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="k">if</span> ! <span class="o">[</span> <span class="nv">$TERM_SESSION_ID</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nb">export</span> <span class="nv">TERM_SESSION_ID</span><span class="o">=</span><span class="sb">`</span>uuidgen<span class="sb">`</span>
+<span class="k">fi</span>
 </code></pre></div><h3 id="12-kubeconfig-dummy-생성">1.2 kubeconfig dummy 생성</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat &gt; /tmp/kube-config-dummy-<span style="color:#e6db74">${</span>TERM_SESSION_ID##*:<span style="color:#e6db74">}</span>.yml <span style="color:#e6db74">&lt;&lt;EOF
-</span><span style="color:#e6db74">apiVersion: v1
-</span><span style="color:#e6db74">clusters:
-</span><span style="color:#e6db74">- cluster:
-</span><span style="color:#e6db74">    server: &#34;&#34;
-</span><span style="color:#e6db74">  name: dummy
-</span><span style="color:#e6db74">contexts:
-</span><span style="color:#e6db74">- context:
-</span><span style="color:#e6db74">    cluster: &#34;&#34;
-</span><span style="color:#e6db74">    user: &#34;&#34;
-</span><span style="color:#e6db74">  name: dummy
-</span><span style="color:#e6db74">current-context: dummy
-</span><span style="color:#e6db74">kind: Config
-</span><span style="color:#e6db74">preferences: {}
-</span><span style="color:#e6db74">users:
-</span><span style="color:#e6db74">- name: dummy
-</span><span style="color:#e6db74">  user: {}
-</span><span style="color:#e6db74">EOF</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">cat &gt; /tmp/kube-config-dummy-<span class="si">${</span><span class="nv">TERM_SESSION_ID</span><span class="p">##*:</span><span class="si">}</span>.yml <span class="s">&lt;&lt;EOF
+</span><span class="s">apiVersion: v1
+</span><span class="s">clusters:
+</span><span class="s">- cluster:
+</span><span class="s">    server: &#34;&#34;
+</span><span class="s">  name: dummy
+</span><span class="s">contexts:
+</span><span class="s">- context:
+</span><span class="s">    cluster: &#34;&#34;
+</span><span class="s">    user: &#34;&#34;
+</span><span class="s">  name: dummy
+</span><span class="s">current-context: dummy
+</span><span class="s">kind: Config
+</span><span class="s">preferences: {}
+</span><span class="s">users:
+</span><span class="s">- name: dummy
+</span><span class="s">  user: {}
+</span><span class="s">EOF</span>
 </code></pre></div><h3 id="13-session-id-생성">1.3 Session ID 생성</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export KUBECONFIG<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/tmp/kube-config-dummy-</span><span style="color:#e6db74">${</span>TERM_SESSION_ID##*:<span style="color:#e6db74">}</span><span style="color:#e6db74">.yml:</span>$HOME<span style="color:#e6db74">/.kube/config&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span><span class="s2">&#34;/tmp/kube-config-dummy-</span><span class="si">${</span><span class="nv">TERM_SESSION_ID</span><span class="p">##*:</span><span class="si">}</span><span class="s2">.yml:</span><span class="nv">$HOME</span><span class="s2">/.kube/config&#34;</span>
 </code></pre></div><ul>
 <li>default <code>KUBECONFIG=$HOME/.kube/config</code> 입니다.</li>
 <li><code>:</code> 구분자로 파일을 연결하면 context가 merge 됩니다.</li>
