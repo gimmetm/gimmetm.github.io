@@ -1,0 +1,18 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>github.io - Tag - Gimme™ Devlog</title>
+        <link>http://gimmetm.github.com/tags/github.io/</link>
+        <description>github.io - Tag - Gimme™ Devlog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/github.io/" rel="self" type="application/rss+xml" /><item>
+    <title>github.io에 Hugo Blog 만들고 Webstorm(InteliiJ) 플러그인 설정</title>
+    <link>http://gimmetm.github.com/posts/hugo_blog/</link>
+    <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>
+    <author>gimmetm</author>
+    <guid>http://gimmetm.github.com/posts/hugo_blog/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/images/hugo-logo-wide.svg" referrerpolicy="no-referrer">
+            </div><p>그동안 개발을 하면서 헤맸던 부분들 정리해서 공유하고 싶었던 마음이 있었습니다.<br>
+2021년 부터는 매월 하나의 포스트 이상은 작성해보자는 계획을 세우고 일단 블로그를 구성하였습니다.<br>
+첫 포스트는 그 블로그를 구성한 이야기 입니다.</p>]]></description>
+</item></channel>
+</rss>
