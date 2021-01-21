@@ -1,16 +1,18 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>etc - Category - GimmeTM&#39;s Blog</title>
+        <title>etc - Category - Gimme™ Devlog</title>
         <link>http://gimmetm.github.com/categories/etc/</link>
-        <description>etc - Category - GimmeTM&#39;s Blog</description>
+        <description>etc - Category - Gimme™ Devlog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</lastBuildDate><atom:link href="http://gimmetm.github.com/categories/etc/" rel="self" type="application/rss+xml" /><item>
-    <title>첫 포스트</title>
-    <link>http://gimmetm.github.com/posts/first_post/</link>
+    <title>github.io에 Hugo Blog 만들고 Webstorm(InteliiJ) 플러그인 설정</title>
+    <link>http://gimmetm.github.com/posts/hugo_blog/</link>
     <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>
     <author>gimmetm</author>
-    <guid>http://gimmetm.github.com/posts/first_post/</guid>
-    <description><![CDATA[1. 블로그 시작 삽질을 공유하기 위해 github.io 호스팅을 이용해 블로그를 시작
-2. 블로그 구성 hosting : github.io static generation : hugo hugo theme : uBlogger  Reference
-https://ryan-han.com/post/etc/creating_static_blog/]]></description>
+    <guid>http://gimmetm.github.com/posts/hugo_blog/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/images/hugo-logo-wide.svg" referrerpolicy="no-referrer">
+            </div><p>그동안 개발을 하면서 헤맸던 부분들 정리해서 공유하고 싶었던 마음이 있었습니다.<br>
+2021년 부터는 매월 하나의 포스트 이상은 작성해보자는 계획을 세우고 일단 블로그를 구성하였습니다.<br>
+첫 포스트는 그 블로그를 구성한 이야기 입니다.</p>]]></description>
 </item></channel>
 </rss>
