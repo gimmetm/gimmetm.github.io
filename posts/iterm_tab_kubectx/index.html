@@ -29,7 +29,7 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "http:\/\/gimmetm.github.com\/posts\/iterm_tab_kubectx\/"
-        },"genre": "posts","keywords": "k8s, kubectx, iTerm2","wordCount":  163 ,
+        },"genre": "posts","keywords": "k8s, kubectx, iTerm2","wordCount":  174 ,
         "url": "http:\/\/gimmetm.github.com\/posts\/iterm_tab_kubectx\/","datePublished": "2021-01-21T19:03:26+09:00","dateModified": "2021-01-21T19:03:26+09:00","publisher": {
             "@type": "Organization",
             "name": "gimmetm"},"author": {
@@ -86,7 +86,10 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
                 <i class="fas fa-adjust fa-fw"></i>
             </a></div>
     </div>
-</header><main class="main"><div class="container content-article  theme-classic"><div class="toc" id="toc-auto">
+</header><main class="main">
+<script data-ad-client="ca-pub-3438372926222215" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div class="container content-article  theme-classic"><div class="toc" id="toc-auto">
             <div class="toc-title">Contents</div>
             <div class="toc-content" id="toc-content-auto"></div>
         </div><div class="header-post">
@@ -99,7 +102,7 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
             <h1 class="single-title animated flipInX">iTerm2에서 Tab 별로 다른 k8s context 사용하기</h1><div class="post-meta">
                 <div class="post-meta-line"><span class="post-category">
                                 <a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>&nbsp;k8s</a>
-                            </span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time class="timeago" datetime="2021-01-21">2021-01-21</time>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;163 words
+                            </span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time class="timeago" datetime="2021-01-21">2021-01-21</time>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;174 words
                     &nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;One minute</div>
             </div>
         </div>
@@ -123,7 +126,7 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
     <li><a href="#0-kubectx--kubens">0. kubectx &amp; kubens</a></li>
-    <li><a href="#1-zshrc-추가">1. <code>.zshrc</code> 추가</a>
+    <li><a href="#1-zshrc-설정">1. <code>.zshrc</code> 설정</a>
       <ul>
         <li><a href="#11-session-id-생성">1.1 Session ID 생성</a></li>
         <li><a href="#12-kubeconfig-dummy-생성">1.2 kubeconfig dummy 생성</a></li>
@@ -143,12 +146,15 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
 <li><a href="https://github.com/ahmetb/kubectx/" target="_blank" rel="noopener noreffer">kubectx github</a></li>
 <li><a href="https://medium.com/@jyson88/kubectx-kubens-%EC%84%A4%EC%A0%95-%EB%B0%8F-%EC%9E%90%EB%8F%99-%EC%99%84%EC%84%B1-7b9192113a4d" target="_blank" rel="noopener noreffer">kubectx + kubens 설정 및 자동 완성 post</a></li>
 </ul>
-<h2 id="1-zshrc-추가">1. <code>.zshrc</code> 추가</h2>
+<h2 id="1-zshrc-설정">1. <code>.zshrc</code> 설정</h2>
 <h3 id="11-session-id-생성">1.1 Session ID 생성</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="k">if</span> ! <span class="o">[</span> <span class="nv">$TERM_SESSION_ID</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">export</span> <span class="nv">TERM_SESSION_ID</span><span class="o">=</span><span class="sb">`</span>uuidgen<span class="sb">`</span>
 <span class="k">fi</span>
-</code></pre></div><h3 id="12-kubeconfig-dummy-생성">1.2 kubeconfig dummy 생성</h3>
+</code></pre></div><ul>
+<li>처음에는 timestamp로 설정했으나, 재부팅 등 여러탭이 동시에 실행되면 dummy를 공유하게 됩니다.</li>
+</ul>
+<h3 id="12-kubeconfig-dummy-생성">1.2 kubeconfig dummy 생성</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">cat &gt; /tmp/kube-config-dummy-<span class="si">${</span><span class="nv">TERM_SESSION_ID</span><span class="p">##*:</span><span class="si">}</span>.yml <span class="s">&lt;&lt;EOF
 </span><span class="s">apiVersion: v1
 </span><span class="s">clusters:
@@ -173,7 +179,7 @@ iTerm2에서 tab별로 다른 cluster를 바라보며 사용하도록 설정한 
 <li>default <code>KUBECONFIG=$HOME/.kube/config</code> 입니다.</li>
 <li><code>:</code> 구분자로 파일을 연결하면 context가 merge 됩니다.</li>
 <li><code>kubectx</code> 또는 <code>kubectl config</code>로 context를 변경하게 되면 KUBECONFIG 맨 앞에 yaml에 현재 context 정보를 기록합니다.</li>
-<li>session이 생성될때 1.2에서 만든 dummy config 파일을 바라보기 때문에 session 별로 다른 current context를 사용하게 됩니다.</li>
+<li>session이 생성될때 <code>1.2</code>에서 만든 dummy config 파일을 바라보기 때문에, session 별로 다른 current context를 사용하게 됩니다.</li>
 </ul></div>
 
             <div class="post"><div class="post-info-share">
