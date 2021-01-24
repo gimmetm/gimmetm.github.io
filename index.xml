@@ -3,9 +3,20 @@
         <title>Gimme™ Devlog</title>
         <link>http://gimmetm.github.com/</link>
         <description>Gimme™</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 24 Jan 2021 10:23:59 &#43;0900</lastBuildDate>
             <atom:link href="http://gimmetm.github.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Xcode 무한 로딩 / 무한 인덱싱</title>
+    <link>http://gimmetm.github.com/posts/xcode_infinite_loading/</link>
+    <pubDate>Sun, 24 Jan 2021 10:23:59 &#43;0900</pubDate>
+    <author>gimmetm</author>
+    <guid>http://gimmetm.github.com/posts/xcode_infinite_loading/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/images/beach_ball_klein_1x.png" referrerpolicy="no-referrer">
+            </div><p>iOS앱을 Jenkins를 통해서 빌드하다가,<br>
+디버깅때문에 Xcode를 통해 빌드하고 로그를 보려하니 인덱싱을 하면서 무한 로딩에 빠지는 상황이 발생하였습니다.<br>
+이를 해결한 방법입니다.</p>]]></description>
+</item><item>
     <title>iTerm2에서 Tab 별로 다른 k8s context 사용하기</title>
     <link>http://gimmetm.github.com/posts/iterm_tab_kubectx/</link>
     <pubDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</pubDate>
