@@ -11,8 +11,6 @@
     <guid>http://gimmetm.github.com/posts/xcode_infinite_loading/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="/images/beach_ball_klein_1x.png" referrerpolicy="no-referrer">
-            </div><p>iOS앱을 Jenkins를 통해서 빌드하다가,<br>
-디버깅때문에 Xcode를 통해 빌드하고 로그를 보려하니 인덱싱을 하면서 무한 로딩에 빠지는 상황이 발생하였습니다.<br>
-이를 해결한 방법입니다.</p>]]></description>
+            </div><p>iOS앱을 Jenkins를 통해서 빌드하다가, 디버깅때문에 Xcode를 통해 빌드하고 로그를 보려하니 인덱싱을 하면서 무한 로딩에 빠지는 상황이 발생하였는데 이를 해결한 방법입니다.</p>]]></description>
 </item></channel>
 </rss>
