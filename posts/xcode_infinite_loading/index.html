@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Xcode 무한 로딩 / 무한 인덱싱 | </title><meta name="Description" content="Gimme™"><meta property="og:title" content="Xcode 무한 로딩 / 무한 인덱싱" />
+<meta property="og:description" content="iOS앱을 Jenkins를 통해서 빌드하다가,
+디버깅때문에 Xcode를 통해 빌드하고 로그를 보려하니 인덱싱을 하면서 무한 로딩에 빠지는 상황이 발생하였습니다.
+이를 해결한 방법입니다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://gimmetm.github.com/posts/xcode_infinite_loading/" />
+<meta property="article:published_time" content="2021-01-24T10:23:59+09:00" />
+<meta property="article:modified_time" content="2021-01-24T10:23:59+09:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Xcode 무한 로딩 / 무한 인덱싱"/>
+<meta name="twitter:description" content="iOS앱을 Jenkins를 통해서 빌드하다가,
+디버깅때문에 Xcode를 통해 빌드하고 로그를 보려하니 인덱싱을 하면서 무한 로딩에 빠지는 상황이 발생하였습니다.
+이를 해결한 방법입니다."/>
+<meta name="application-name" content="Gimme™ Devlog">
+<meta name="apple-mobile-web-app-title" content="Gimme™ Devlog"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://gimmetm.github.com/posts/xcode_infinite_loading/" /><link rel="prev" href="http://gimmetm.github.com/posts/iterm_tab_kubectx/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Xcode 무한 로딩 / 무한 인덱싱",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/gimmetm.github.com\/posts\/xcode_infinite_loading\/"
+        },"genre": "posts","keywords": "xcode, ios","wordCount":  55 ,
+        "url": "http:\/\/gimmetm.github.com\/posts\/xcode_infinite_loading\/","datePublished": "2021-01-24T10:23:59+09:00","dateModified": "2021-01-24T10:23:59+09:00","publisher": {
+            "@type": "Organization",
+            "name": "gimmetm"},"author": {
+                "@type": "Person",
+                "name": "gimmetm"
+            },"description": ""
+    }
+    </script><script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "http:\/\/gimmetm.github.com\/"
+        },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "ios",
+            "item": "http://gimmetm.github.com/categories/ios/"
+        },{
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Xcode 무한 로딩 \/ 무한 인덱싱"
+            }]
+    }
+</script></head>
+    <body data-header-desktop="" data-header-mobile=""><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Gimme™ Devlog" class="header-logo">Gimme™ Devlog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Gimme™ Devlog" class="header-logo">Gimme™ Devlog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+<script data-ad-client="ca-pub-3438372926222215" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="container content-article  theme-classic"><div class="toc" id="toc-auto">
+            <div class="toc-title">Contents</div>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><div class="header-post">
+        <div class="post-title">
+
+            <div class="post-all-meta">
+            <div class="breadcrumbs">
+    <a href="/">Home </a>/ <a href="/categories/ios/">ios </a>/ <a href="/"> Xcode 무한 로딩 / 무한 인덱싱 </a>
+</div>
+            <h1 class="single-title animated flipInX">Xcode 무한 로딩 / 무한 인덱싱</h1><div class="post-meta">
+                <div class="post-meta-line"><span class="post-category">
+                                <a href="/categories/ios/"><i class="far fa-folder fa-fw"></i>&nbsp;ios</a>
+                            </span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time class="timeago" datetime="2021-01-24">2021-01-24</time>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;55 words
+                    &nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;One minute</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    </div>
+
+        <article class="single toc-start">
+
+        <div class="content-block content-block-first content-block-position">
+
+        <div class="post"><div class="image-theme-classic">
+                <img src="/images/beach_ball_klein_1x.png" style="width: 100%">
+            </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#deriveddata-clear">DerivedData Clear</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+            </div><p>iOS앱을 Jenkins를 통해서 빌드하다가,<br>
+디버깅때문에 Xcode를 통해 빌드하고 로그를 보려하니 인덱싱을 하면서 무한 로딩에 빠지는 상황이 발생하였습니다.<br>
+이를 해결한 방법입니다.</p>
+<h2 id="deriveddata-clear">DerivedData Clear</h2>
+<ul>
+<li>Terminal을 실행 후 아래 위치로 이동하 Derived Data를 삭제하고 다시 빌드합니다.</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> /Users/사용자명/Library/Developer/Xcode/DerivedData
+rm -rf *
+</code></pre></div><h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://itopstory.com/how-to-fix-xcode-indexing-endless-problem-a-different-way-9d4ac730d575/" target="_blank" rel="noopener noreffer">How to fix Xcode indexing endless problem ( different way)</a></li>
+<li><a href="https://m.blog.naver.com/PostView.nhn?blogId=sabisung&amp;logNo=220824945465&amp;proxyReferer=https:%2F%2Fwww.google.com%2F/" target="_blank" rel="noopener noreffer">Xcode의 Organizer가 무한 로딩시 해결 방법</a></li>
+</ul></div>
+
+            <div class="post"><div class="post-info-share">
+    <span></span>
+</div>
+<div class="footer-post-author">
+    <div class="author-avatar"><a href="https://gimmetm.github.io" target="_blank"><img alt="" src="https://s.gravatar.com/avatar/dce7da4ea9af357a735a6eeef75b0025?s=80" border="0"></a></div>
+    <div class="author-info">
+        <div class="name"><a href="https://gimmetm.github.io" target="_blank">MINGYUM KIM</a></div>
+        <div class="number-posts">Cloud App. Modernization(MSA), Indie Game Developer</span></div>
+    </div>
+</div><div class="footer-donate">
+    <div>AWS GCP k8s java go js c# unity </div>
+</div><div class="post-footer" id="post-footer"><div class="post-navigation"><div class="post-nav-box nav-box-prev">
+            <a class="nav-box" href="/posts/iterm_tab_kubectx/"><span class="nav-icon"><svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM142.1 273l135.5 135.5c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L226.9 256l101.6-101.6c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L142.1 239c-9.4 9.4-9.4 24.6 0 34z"></path></svg></span><div style="text-align: right;padding-left: 10px"><div class="nav-text-h">Next article</div><span class="nav-text">iTerm2에서 Tab 별로 다른 k8s context 사용하기</span></div></a>
+        </div></div></div>
+</div>
+        </div>
+    <div id="toc-final"></div>
+    </article><div class=" post-tags post-tags-toc "><a href="/tags/xcode/" class="tag">xcode</a><a href="/tags/ios/" class="tag">ios</a></div><div class="page single comments content-block-position"><div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></div></div></main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.80.0">Hugo</a> | Theme - <a href="https://ublogger.netlify.app/?utm_source=http://gimmetm.github.com/&utm_medium=footer&utm_campaign=config&utm_term=1.2.0" target="_blank" title="uBlogger 1.2.0"><i class="fas fa-pencil-alt fa-fw"></i> uBlogger</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span>2021</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><script src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/lib/clipboard/clipboard.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/katex/katex.min.js"></script><script src="/lib/katex/auto-render.min.js"></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"gimmetm/gimmetm.github.io"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script src="/js/theme.min.js"></script><script src="/js/jquery-3.5.1.min.js"></script></body>
+</html>
