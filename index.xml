@@ -3,9 +3,19 @@
         <title>Gimme™ Devlog</title>
         <link>http://gimmetm.github.com/</link>
         <description>Gimme™</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 24 Jan 2021 10:23:59 &#43;0900</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</lastBuildDate>
             <atom:link href="http://gimmetm.github.com/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Open Policy Agent</title>
+    <link>http://gimmetm.github.com/posts/open_policy_agent/</link>
+    <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>
+    <author>gimmetm</author>
+    <guid>http://gimmetm.github.com/posts/open_policy_agent/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/images/opa-banner.png" referrerpolicy="no-referrer">
+            </div><p>Object Storage와 RDB의 접근권한을 제어하는 서비스를 고도화 하기 위해
+CNCF 프로젝트 중 하나인 OPA(Open Policy Agent)에 대해 조사(구글 번역 후 실습)해 보았습니다.</p>]]></description>
+</item><item>
     <title>Xcode 무한 로딩 / 무한 인덱싱</title>
     <link>http://gimmetm.github.com/posts/xcode_infinite_loading/</link>
     <pubDate>Sun, 24 Jan 2021 10:23:59 &#43;0900</pubDate>

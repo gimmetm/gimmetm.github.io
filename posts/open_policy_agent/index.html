@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Open Policy Agent | </title><meta name="Description" content="Gimme™"><meta property="og:title" content="Open Policy Agent" />
+<meta property="og:description" content="Object Storage와 RDB의 접근권한을 제어하는 서비스를 고도화 하기 위해
+CNCF 프로젝트 중 하나인 OPA(Open Policy Agent)에 대해 조사(구글 번역 후 실습)해 보았습니다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://gimmetm.github.com/posts/open_policy_agent/" />
+<meta property="article:published_time" content="2021-01-28T09:26:36+09:00" />
+<meta property="article:modified_time" content="2021-01-28T09:26:36+09:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Open Policy Agent"/>
+<meta name="twitter:description" content="Object Storage와 RDB의 접근권한을 제어하는 서비스를 고도화 하기 위해
+CNCF 프로젝트 중 하나인 OPA(Open Policy Agent)에 대해 조사(구글 번역 후 실습)해 보았습니다."/>
+<meta name="application-name" content="Gimme™ Devlog">
+<meta name="apple-mobile-web-app-title" content="Gimme™ Devlog"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://gimmetm.github.com/posts/open_policy_agent/" /><link rel="prev" href="http://gimmetm.github.com/posts/xcode_infinite_loading/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Open Policy Agent",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/gimmetm.github.com\/posts\/open_policy_agent\/"
+        },"genre": "posts","keywords": "k8s, policy, cncf","wordCount":  871 ,
+        "url": "http:\/\/gimmetm.github.com\/posts\/open_policy_agent\/","datePublished": "2021-01-28T09:26:36+09:00","dateModified": "2021-01-28T09:26:36+09:00","publisher": {
+            "@type": "Organization",
+            "name": "gimmetm"},"author": {
+                "@type": "Person",
+                "name": "gimmetm"
+            },"description": ""
+    }
+    </script><script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "http:\/\/gimmetm.github.com\/"
+        },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "k8s",
+            "item": "http://gimmetm.github.com/categories/k8s/"
+        },{
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Open Policy Agent"
+            }]
+    }
+</script></head>
+    <body data-header-desktop="" data-header-mobile=""><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Gimme™ Devlog" class="header-logo">Gimme™ Devlog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Gimme™ Devlog" class="header-logo">Gimme™ Devlog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+<script data-ad-client="ca-pub-3438372926222215" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="container content-article  theme-classic"><div class="toc" id="toc-auto">
+            <div class="toc-title">Contents</div>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><div class="header-post">
+        <div class="post-title">
+
+            <div class="post-all-meta">
+            <div class="breadcrumbs">
+    <a href="/">Home </a>/ <a href="/categories/k8s/">k8s </a>/ <a href="/"> Open Policy Agent </a>
+</div>
+            <h1 class="single-title animated flipInX">Open Policy Agent</h1><div class="post-meta">
+                <div class="post-meta-line"><span class="post-category">
+                                <a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>&nbsp;k8s</a>
+                            </span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time class="timeago" datetime="2021-01-28">2021-01-28</time>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;871 words
+                    &nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;5 minutes</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    </div>
+
+        <article class="single toc-start">
+
+        <div class="content-block content-block-first content-block-position">
+
+        <div class="post"><div class="image-theme-classic">
+                <img src="/images/opa-banner.png" style="width: 100%">
+            </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-opa-introduction">1. OPA Introduction</a>
+      <ul>
+        <li><a href="#11-overview">1.1 Overview</a></li>
+        <li><a href="#12-rego">1.2 Rego</a></li>
+        <li><a href="#13-example">1.3 Example</a></li>
+        <li><a href="#14-opa-실행">1.4 OPA 실행</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><p>Object Storage와 RDB의 접근권한을 제어하는 서비스를 고도화 하기 위해
+CNCF 프로젝트 중 하나인 OPA(Open Policy Agent)에 대해 조사(구글 번역 후 실습)해 보았습니다.</p>
+<h2 id="1-opa-introduction">1. OPA Introduction</h2>
+<p>OPA (&ldquo;oh-pa&quot;로 발음)는 스택 전체에 정책 시행을 통합하는 오픈 소스 범용 정책 엔진입니다.
+OPA는 정책을 코드로 지정할 수있는 높은 수준의 선언적 언어와 소프트웨어에서 정책 의사 결정의 부담을 덜어주는 간단한 API를 제공합니다.
+OPA를 사용하여 마이크로 서비스, Kubernetes, CI / CD 파이프 라인, API 게이트웨이 등에서 정책을 시행 할 수 있습니다.</p>
+<h3 id="11-overview">1.1 Overview</h3>
+<p>OPA는 정책 시행과 정책 의사 결정을 분리합니다.
+소프트웨어가 정책 결정을 내려야 할 때 OPA를 쿼리하고 구조화 된 데이터 (ex. JSON)를 입력으로 제공합니다.
+OPA는 임의의 구조화 된 데이터를 입력으로 받아들입니다.
+
+
+<div style="text-align: center"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/opa-service.svg"
+        data-srcset="/images/opa-service.svg, /images/opa-service.svg 1.5x, /images/opa-service.svg 1.6x"
+        data-sizes="auto"
+        alt="opa_overview.svg"
+        title="opa-service.svg" /></div></p>
+<p>OPA는 쿼리 입력을 평가하고 정책 및 데이터에 대해 정책 결정을 생성합니다.
+OPA 및 Rego는 도메인에 구애받지 않으므로 정책에서 거의 모든 종류의 불변을 설명 할 수 있습니다.</p>
+<p>예를 들면 :</p>
+<ul>
+<li>어떤 사용자가 어떤 리소스에 액세스 할 수 있는지.</li>
+<li>어떤 Subnet의 Egress Traffic이 허용 되는지.</li>
+<li>워크로드가 어느 클러스터에 배포되어야 하는지.</li>
+<li>어떤 Registries binaries로 부터 다운 받을수 있는지.</li>
+<li>컨테이너가 어떤 OS Capabilities를 실행할수 있는지.</li>
+<li>언제 시스템에 접근 할 수 있는지.</li>
+</ul>
+<p>정책 결정은 단순한 예 / 아니오 또는 답변 허용 / 거부로 제한되지 않습니다.
+쿼리 입력과 마찬가지로 정책은 임의의 구조화 된 데이터를 출력으로 생성 할 수 있습니다.</p>
+<h3 id="12-rego">1.2 Rego</h3>
+<p>OPA 정책은 Rego라는 고급 선언 언어로 표현됩니다.
+Rego ( &ldquo;ray-go&quot;로 발음)는 복잡한 계층적 데이터 구조에 대한 정책을 표현하기 위해 특별히 제작되었습니다.
+Rego에 대한 자세한 정보는 <a href="https://www.openpolicyagent.org/docs/latest/policy-language" target="_blank" rel="noopener noreffer">Policy Language</a>
+문서를 참조하십시오.</p>
+<h3 id="13-example">1.3 Example</h3>
+<p>
+
+<div style="text-align: center"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/images/opa-example.svg"
+        data-srcset="/images/opa-example.svg, /images/opa-example.svg 1.5x, /images/opa-example.svg 1.6x"
+        data-sizes="auto"
+        alt="opa_example.svg"
+        title="opa-example.svg" /></div></p>
+<p>시스템에는 세 가지 종류의 구성 요소가 있습니다.</p>
+<ul>
+<li>서버는 0 개 이상의 프로토콜 (예 : http, ssh 등)을 노출합니다.</li>
+<li>네트워크는 서버를 연결하며 Public 또는 Private이 될 수 있습니다. Public 네트워크는 인터넷에 연결됩니다.</li>
+<li>포트는 서버를 네트워크에 연결합니다.</li>
+</ul>
+<p>모든 서버, 네트워크 및 포트는 스크립트로 프로비저닝됩니다. 스크립트는 시스템의 JSON 표현을 입력으로받습니다.</p>
+<h4 id="131-시스템의-json-표현">1.3.1 시스템의 JSON 표현</h4>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;servers&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;app&#34;</span><span class="p">,</span> <span class="nt">&#34;protocols&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;https&#34;</span><span class="p">,</span> <span class="s2">&#34;ssh&#34;</span><span class="p">],</span> <span class="nt">&#34;ports&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;p1&#34;</span><span class="p">,</span> <span class="s2">&#34;p2&#34;</span><span class="p">,</span> <span class="s2">&#34;p3&#34;</span><span class="p">]},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;db&#34;</span><span class="p">,</span> <span class="nt">&#34;protocols&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;mysql&#34;</span><span class="p">],</span> <span class="nt">&#34;ports&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;p3&#34;</span><span class="p">]},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;cache&#34;</span><span class="p">,</span> <span class="nt">&#34;protocols&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;memcache&#34;</span><span class="p">],</span> <span class="nt">&#34;ports&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;p3&#34;</span><span class="p">]},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;ci&#34;</span><span class="p">,</span> <span class="nt">&#34;protocols&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;http&#34;</span><span class="p">],</span> <span class="nt">&#34;ports&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;p1&#34;</span><span class="p">,</span> <span class="s2">&#34;p2&#34;</span><span class="p">]},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;busybox&#34;</span><span class="p">,</span> <span class="nt">&#34;protocols&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;telnet&#34;</span><span class="p">],</span> <span class="nt">&#34;ports&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;p1&#34;</span><span class="p">]}</span>
+    <span class="p">],</span>
+    <span class="nt">&#34;networks&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;net1&#34;</span><span class="p">,</span> <span class="nt">&#34;public&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;net2&#34;</span><span class="p">,</span> <span class="nt">&#34;public&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;net3&#34;</span><span class="p">,</span> <span class="nt">&#34;public&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;net4&#34;</span><span class="p">,</span> <span class="nt">&#34;public&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&#34;ports&#34;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;p1&#34;</span><span class="p">,</span> <span class="nt">&#34;network&#34;</span><span class="p">:</span> <span class="s2">&#34;net1&#34;</span><span class="p">},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;p2&#34;</span><span class="p">,</span> <span class="nt">&#34;network&#34;</span><span class="p">:</span> <span class="s2">&#34;net3&#34;</span><span class="p">},</span>
+        <span class="p">{</span><span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;p3&#34;</span><span class="p">,</span> <span class="nt">&#34;network&#34;</span><span class="p">:</span> <span class="s2">&#34;net2&#34;</span><span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div><h4 id="132-정책-예제">1.3.2 정책 예제</h4>
+<p>새로운 보안 정책에 대해 다음과 같습니다.</p>
+<ol>
+<li>인터넷에서 연결할 수있는 서버는 안전하지 않은 &lsquo;http&rsquo;프로토콜을 노출해서는 안됩니다.</li>
+<li>서버는 &lsquo;텔넷&rsquo;프로토콜을 노출 할 수 없습니다.</li>
+</ol>
+<p>정책은 서버, 네트워크 및 포트가 프로비저닝되고 규정 준수 팀이 정책을 위반하는 서버를 찾기 위해 시스템을 주기적으로 감사하려고 할 때 적용되어야합니다.</p>
+<pre><code>package example
+
+allow = true {                                      # allow is true if...
+    count(violation) == 0                           # there are zero violations.
+}
+
+violation[server.id] {                              # a server is in the violation set if...
+    some server
+    public_server[server]                           # it exists in the 'public_server' set and...
+    server.protocols[_] == &quot;http&quot;                   # it contains the insecure &quot;http&quot; protocol.
+}
+
+violation[server.id] {                              # a server is in the violation set if...
+    server := input.servers[_]                      # it exists in the input.servers collection and...
+    server.protocols[_] == &quot;telnet&quot;                 # it contains the &quot;telnet&quot; protocol.
+}
+
+public_server[server] {                             # a server exists in the public_server set if...
+    some i, j
+    server := input.servers[_]                      # it exists in the input.servers collection and...
+    server.ports[_] == input.ports[i].id            # it references a port in the input.ports collection and...
+    input.ports[i].network == input.networks[j].id  # the port references a network in the input.networks collection and...
+    input.networks[j].public                        # the network is public.
+}
+</code></pre><ol>
+<li>public_server로 서버 정보 collection을 정의</li>
+<li>violation으로 위반 사항을 정의</li>
+<li>violation count가 0인경우 allow</li>
+</ol>
+<h3 id="14-opa-실행">1.4 OPA 실행</h3>
+<h4 id="141-download-opa">1.4.1 Download OPA</h4>
+<p>GitHub 릴리스에서 플랫폼 용 OPA 바이너리를 다운로드 받아 시작할 수 있습니다.</p>
+<p>On macOS (64-bit):</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_darwin_amd64
+</code></pre></div><p>On Linux (64-bit):</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+</code></pre></div><p>OPA 실행파일의 permission을 설정합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">chmod <span class="m">755</span> ./opa
+</code></pre></div><p>Docker를 통해서도 실행 가능 합니다. 최신 stable 이미지 태그 : <code>openpolicyagent/opa:latest</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">docker run -it --rm -p 8181:8181 openpolicyagent/opa run --server --addr :8181
+</code></pre></div><h4 id="142-run">1.4.2 Run</h4>
+<h5 id="opa-eval-11"><code>./opa eval 1=1</code></h5>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"> ./opa <span class="nb">eval</span> <span class="nv">1</span><span class="o">=</span><span class="m">1</span>
+ 
+<span class="o">{</span>
+  <span class="s2">&#34;result&#34;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&#34;expressions&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+          <span class="s2">&#34;value&#34;</span>: true,
+          <span class="s2">&#34;text&#34;</span>: <span class="s2">&#34;1=1&#34;</span>,
+          <span class="s2">&#34;location&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;row&#34;</span>: 1,
+            <span class="s2">&#34;col&#34;</span>: <span class="m">1</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">]</span>
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div><h5 id="-opa-eval-123"><code> ./opa eval &quot;1*2+3&quot;</code></h5>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"> ./opa <span class="nb">eval</span> <span class="s2">&#34;1*2+3&#34;</span>
+<span class="o">{</span>
+  <span class="s2">&#34;result&#34;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&#34;expressions&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+          <span class="s2">&#34;value&#34;</span>: 5,
+          <span class="s2">&#34;text&#34;</span>: <span class="s2">&#34;1*2+3&#34;</span>,
+          <span class="s2">&#34;location&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;row&#34;</span>: 1,
+            <span class="s2">&#34;col&#34;</span>: <span class="m">1</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">]</span>
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div><h5 id="-opa-eval--i-inputjson--d-examplerego-dataexampleviolationx"><code> ./opa eval -i input.json -d example.rego &quot;data.example.violation[x]&quot;</code></h5>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">./opa <span class="nb">eval</span> -i input.json -d example.rego <span class="s2">&#34;data.example.violation[x]&#34;</span>
+<span class="o">{</span>
+  <span class="s2">&#34;result&#34;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&#34;expressions&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+          <span class="s2">&#34;value&#34;</span>: <span class="s2">&#34;ci&#34;</span>,
+          <span class="s2">&#34;text&#34;</span>: <span class="s2">&#34;data.example.violation[x]&#34;</span>,
+          <span class="s2">&#34;location&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;row&#34;</span>: 1,
+            <span class="s2">&#34;col&#34;</span>: <span class="m">1</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">]</span>,
+      <span class="s2">&#34;bindings&#34;</span>: <span class="o">{</span>
+        <span class="s2">&#34;x&#34;</span>: <span class="s2">&#34;ci&#34;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="o">{</span>
+      <span class="s2">&#34;expressions&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+          <span class="s2">&#34;value&#34;</span>: <span class="s2">&#34;busybox&#34;</span>,
+          <span class="s2">&#34;text&#34;</span>: <span class="s2">&#34;data.example.violation[x]&#34;</span>,
+          <span class="s2">&#34;location&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;row&#34;</span>: 1,
+            <span class="s2">&#34;col&#34;</span>: <span class="m">1</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">]</span>,
+      <span class="s2">&#34;bindings&#34;</span>: <span class="o">{</span>
+        <span class="s2">&#34;x&#34;</span>: <span class="s2">&#34;busybox&#34;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div><h5 id="opa-eval---fail-defined--i-inputjson--d-examplerego-dataexampleviolationx"><code>./opa eval --fail-defined -i input.json -d example.rego &quot;data.example.violation[x]&quot;</code></h5>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">./opa <span class="nb">eval</span> --fail-defined -i input.json -d example.rego <span class="s2">&#34;data.example.violation[x]&#34;</span>
+<span class="o">{</span>
+  <span class="s2">&#34;result&#34;</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">&#34;expressions&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+          <span class="s2">&#34;value&#34;</span>: <span class="s2">&#34;ci&#34;</span>,
+          <span class="s2">&#34;text&#34;</span>: <span class="s2">&#34;data.example.violation[x]&#34;</span>,
+          <span class="s2">&#34;location&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;row&#34;</span>: 1,
+            <span class="s2">&#34;col&#34;</span>: <span class="m">1</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">]</span>,
+      <span class="s2">&#34;bindings&#34;</span>: <span class="o">{</span>
+        <span class="s2">&#34;x&#34;</span>: <span class="s2">&#34;ci&#34;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="o">{</span>
+      <span class="s2">&#34;expressions&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+          <span class="s2">&#34;value&#34;</span>: <span class="s2">&#34;busybox&#34;</span>,
+          <span class="s2">&#34;text&#34;</span>: <span class="s2">&#34;data.example.violation[x]&#34;</span>,
+          <span class="s2">&#34;location&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;row&#34;</span>: 1,
+            <span class="s2">&#34;col&#34;</span>: <span class="m">1</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">]</span>,
+      <span class="s2">&#34;bindings&#34;</span>: <span class="o">{</span>
+        <span class="s2">&#34;x&#34;</span>: <span class="s2">&#34;busybox&#34;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div><h4 id="143-run-server">1.4.3 Run Server</h4>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">./opa run --server example.rego
+
+<span class="o">{</span><span class="s2">&#34;addrs&#34;</span>:<span class="o">[</span><span class="s2">&#34;:8181&#34;</span><span class="o">]</span>,<span class="s2">&#34;diagnostic-addrs&#34;</span>:<span class="o">[]</span>,<span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;Initializing server.&#34;</span>,<span class="s2">&#34;time&#34;</span>:<span class="s2">&#34;2021-01-28T13:17:10+09:00&#34;</span><span class="o">}</span>
+
+</code></pre></div><ul>
+<li>input.json을 Post 입력 형식으로 생성</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">cat <span class="s">&lt;&lt;EOF &gt; v1-data-input.json
+</span><span class="s">{
+</span><span class="s">&#34;input&#34;: $(cat input.json)
+</span><span class="s">}
+</span><span class="s">EOF</span>
+</code></pre></div><ul>
+<li>input.json의 violation 확인</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl localhost:8181/v1/data/example/violation -d @v1-data-input.json -H <span class="s1">&#39;Content-Type: application/json&#39;</span>
+<span class="o">{</span><span class="s2">&#34;result&#34;</span>:<span class="o">[</span><span class="s2">&#34;ci&#34;</span>,<span class="s2">&#34;busybox&#34;</span><span class="o">]}</span>%
+</code></pre></div><ul>
+<li>input.json의 allow 확인</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl localhost:8181/v1/data/example/allow -d @v1-data-input.json -H <span class="s1">&#39;Content-Type: application/json&#39;</span>
+<span class="o">{</span><span class="s2">&#34;result&#34;</span>:false<span class="o">}</span>%
+</code></pre></div><ul>
+<li>요청들의 서버 로그</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">{</span><span class="s2">&#34;client_addr&#34;</span>:<span class="s2">&#34;127.0.0.1:53817&#34;</span>,<span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;Received request.&#34;</span>,<span class="s2">&#34;req_id&#34;</span>:1,<span class="s2">&#34;req_method&#34;</span>:<span class="s2">&#34;POST&#34;</span>,<span class="s2">&#34;req_path&#34;</span>:<span class="s2">&#34;/v1/data/example/violation&#34;</span>,<span class="s2">&#34;time&#34;</span>:<span class="s2">&#34;2021-01-28T13:17:30+09:00&#34;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;client_addr&#34;</span>:<span class="s2">&#34;127.0.0.1:53817&#34;</span>,<span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;Sent response.&#34;</span>,<span class="s2">&#34;req_id&#34;</span>:1,<span class="s2">&#34;req_method&#34;</span>:<span class="s2">&#34;POST&#34;</span>,<span class="s2">&#34;req_path&#34;</span>:<span class="s2">&#34;/v1/data/example/violation&#34;</span>,<span class="s2">&#34;resp_bytes&#34;</span>:13,<span class="s2">&#34;resp_duration&#34;</span>:4.727648,<span class="s2">&#34;resp_status&#34;</span>:200,<span class="s2">&#34;time&#34;</span>:<span class="s2">&#34;2021-01-28T13:17:30+09:00&#34;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;client_addr&#34;</span>:<span class="s2">&#34;127.0.0.1:53836&#34;</span>,<span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;Received request.&#34;</span>,<span class="s2">&#34;req_id&#34;</span>:2,<span class="s2">&#34;req_method&#34;</span>:<span class="s2">&#34;POST&#34;</span>,<span class="s2">&#34;req_path&#34;</span>:<span class="s2">&#34;/v1/data/example/violation&#34;</span>,<span class="s2">&#34;time&#34;</span>:<span class="s2">&#34;2021-01-28T13:17:49+09:00&#34;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;client_addr&#34;</span>:<span class="s2">&#34;127.0.0.1:53836&#34;</span>,<span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;Sent response.&#34;</span>,<span class="s2">&#34;req_id&#34;</span>:2,<span class="s2">&#34;req_method&#34;</span>:<span class="s2">&#34;POST&#34;</span>,<span class="s2">&#34;req_path&#34;</span>:<span class="s2">&#34;/v1/data/example/violation&#34;</span>,<span class="s2">&#34;resp_bytes&#34;</span>:27,<span class="s2">&#34;resp_duration&#34;</span>:0.952211,<span class="s2">&#34;resp_status&#34;</span>:200,<span class="s2">&#34;time&#34;</span>:<span class="s2">&#34;2021-01-28T13:17:49+09:00&#34;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;client_addr&#34;</span>:<span class="s2">&#34;127.0.0.1:53854&#34;</span>,<span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;Received request.&#34;</span>,<span class="s2">&#34;req_id&#34;</span>:3,<span class="s2">&#34;req_method&#34;</span>:<span class="s2">&#34;POST&#34;</span>,<span class="s2">&#34;req_path&#34;</span>:<span class="s2">&#34;/v1/data/example/allow&#34;</span>,<span class="s2">&#34;time&#34;</span>:<span class="s2">&#34;2021-01-28T13:18:03+09:00&#34;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&#34;client_addr&#34;</span>:<span class="s2">&#34;127.0.0.1:53854&#34;</span>,<span class="s2">&#34;level&#34;</span>:<span class="s2">&#34;info&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;Sent response.&#34;</span>,<span class="s2">&#34;req_id&#34;</span>:3,<span class="s2">&#34;req_method&#34;</span>:<span class="s2">&#34;POST&#34;</span>,<span class="s2">&#34;req_path&#34;</span>:<span class="s2">&#34;/v1/data/example/allow&#34;</span>,<span class="s2">&#34;resp_bytes&#34;</span>:16,<span class="s2">&#34;resp_duration&#34;</span>:1.156257,<span class="s2">&#34;resp_status&#34;</span>:200,<span class="s2">&#34;time&#34;</span>:<span class="s2">&#34;2021-01-28T13:18:03+09:00&#34;</span><span class="o">}</span>
+</code></pre></div></div>
+
+            <div class="post"><div class="post-info-share">
+    <span></span>
+</div>
+<div class="footer-post-author">
+    <div class="author-avatar"><a href="https://gimmetm.github.io" target="_blank"><img alt="" src="https://s.gravatar.com/avatar/dce7da4ea9af357a735a6eeef75b0025?s=80" border="0"></a></div>
+    <div class="author-info">
+        <div class="name"><a href="https://gimmetm.github.io" target="_blank">MINGYUM KIM</a></div>
+        <div class="number-posts">Cloud App. Modernization(MSA), Indie Game Developer</span></div>
+    </div>
+</div><div class="footer-donate">
+    <div>AWS GCP k8s java go js c# unity </div>
+</div><div class="post-footer" id="post-footer"><div class="post-navigation"><div class="post-nav-box nav-box-prev">
+            <a class="nav-box" href="/posts/xcode_infinite_loading/"><span class="nav-icon"><svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM142.1 273l135.5 135.5c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L226.9 256l101.6-101.6c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L142.1 239c-9.4 9.4-9.4 24.6 0 34z"></path></svg></span><div style="text-align: right;padding-left: 10px"><div class="nav-text-h">Next article</div><span class="nav-text">Xcode 무한 로딩 / 무한 인덱싱</span></div></a>
+        </div></div></div>
+</div>
+        </div>
+    <div id="toc-final"></div>
+    </article><div class=" post-tags post-tags-toc "><a href="/tags/k8s/" class="tag">k8s</a><a href="/tags/policy/" class="tag">policy</a><a href="/tags/cncf/" class="tag">cncf</a></div><div class="page single comments content-block-position"><div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></div></div></main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.80.0">Hugo</a> | Theme - <a href="https://ublogger.netlify.app/?utm_source=http://gimmetm.github.com/&utm_medium=footer&utm_campaign=config&utm_term=1.2.0" target="_blank" title="uBlogger 1.2.0"><i class="fas fa-pencil-alt fa-fw"></i> uBlogger</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span>2021</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><script src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/lib/clipboard/clipboard.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/katex/katex.min.js"></script><script src="/lib/katex/auto-render.min.js"></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"gimmetm/gimmetm.github.io"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script src="/js/theme.min.js"></script><script src="/js/jquery-3.5.1.min.js"></script><script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	        ga('create', 'G-K4E1B7WS7R', 'auto');
+	        ga('set', 'anonymizeIp', true);
+	        ga('send', 'pageview');
+	    </script></body>
+</html>

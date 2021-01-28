@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>cncf - Tag - Gimme™ Devlog</title>
+        <link>http://gimmetm.github.com/tags/cncf/</link>
+        <description>cncf - Tag - Gimme™ Devlog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/cncf/" rel="self" type="application/rss+xml" /><item>
+    <title>Open Policy Agent</title>
+    <link>http://gimmetm.github.com/posts/open_policy_agent/</link>
+    <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>
+    <author>gimmetm</author>
+    <guid>http://gimmetm.github.com/posts/open_policy_agent/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/images/opa-banner.png" referrerpolicy="no-referrer">
+            </div><p>Object Storage와 RDB의 접근권한을 제어하는 서비스를 고도화 하기 위해
+CNCF 프로젝트 중 하나인 OPA(Open Policy Agent)에 대해 조사(구글 번역 후 실습)해 보았습니다.</p>]]></description>
+</item></channel>
+</rss>
