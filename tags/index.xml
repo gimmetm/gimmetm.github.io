@@ -1,77 +1,77 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Tags - Tag - Gimme™ Devlog</title>
-        <link>https://gimmetm.github.com/tags/</link>
+        <link>https://gimmetm.github.io/tags/</link>
         <description>Tags - Tag - Gimme™ Devlog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</lastBuildDate><atom:link href="https://gimmetm.github.com/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</lastBuildDate><atom:link href="https://gimmetm.github.io/tags/" rel="self" type="application/rss+xml" /><item>
     <title>configmap</title>
-    <link>https://gimmetm.github.com/tags/configmap/</link>
+    <link>https://gimmetm.github.io/tags/configmap/</link>
     <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/configmap/</guid>
+    <guid>https://gimmetm.github.io/tags/configmap/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>k8s</title>
-    <link>https://gimmetm.github.com/tags/k8s/</link>
+    <link>https://gimmetm.github.io/tags/k8s/</link>
     <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/k8s/</guid>
+    <guid>https://gimmetm.github.io/tags/k8s/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>vue.js</title>
-    <link>https://gimmetm.github.com/tags/vue.js/</link>
+    <link>https://gimmetm.github.io/tags/vue.js/</link>
     <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/vue.js/</guid>
+    <guid>https://gimmetm.github.io/tags/vue.js/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>cncf</title>
-    <link>https://gimmetm.github.com/tags/cncf/</link>
+    <link>https://gimmetm.github.io/tags/cncf/</link>
     <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/cncf/</guid>
+    <guid>https://gimmetm.github.io/tags/cncf/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>policy</title>
-    <link>https://gimmetm.github.com/tags/policy/</link>
+    <link>https://gimmetm.github.io/tags/policy/</link>
     <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/policy/</guid>
+    <guid>https://gimmetm.github.io/tags/policy/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>ios</title>
-    <link>https://gimmetm.github.com/tags/ios/</link>
+    <link>https://gimmetm.github.io/tags/ios/</link>
     <pubDate>Sun, 24 Jan 2021 10:23:59 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/ios/</guid>
+    <guid>https://gimmetm.github.io/tags/ios/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>xcode</title>
-    <link>https://gimmetm.github.com/tags/xcode/</link>
+    <link>https://gimmetm.github.io/tags/xcode/</link>
     <pubDate>Sun, 24 Jan 2021 10:23:59 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/xcode/</guid>
+    <guid>https://gimmetm.github.io/tags/xcode/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>iTerm2</title>
-    <link>https://gimmetm.github.com/tags/iterm2/</link>
+    <link>https://gimmetm.github.io/tags/iterm2/</link>
     <pubDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/iterm2/</guid>
+    <guid>https://gimmetm.github.io/tags/iterm2/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>kubectx</title>
-    <link>https://gimmetm.github.com/tags/kubectx/</link>
+    <link>https://gimmetm.github.io/tags/kubectx/</link>
     <pubDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/kubectx/</guid>
+    <guid>https://gimmetm.github.io/tags/kubectx/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>github.io</title>
-    <link>https://gimmetm.github.com/tags/github.io/</link>
+    <link>https://gimmetm.github.io/tags/github.io/</link>
     <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>
     <author>Author</author>
-    <guid>https://gimmetm.github.com/tags/github.io/</guid>
+    <guid>https://gimmetm.github.io/tags/github.io/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>
