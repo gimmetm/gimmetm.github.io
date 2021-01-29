@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>k8s - Tag - Gimme™ Devlog</title>
-        <link>http://gimmetm.github.com/tags/k8s/</link>
+        <link>https://gimmetm.github.com/tags/k8s/</link>
         <description>k8s - Tag - Gimme™ Devlog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/k8s/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</lastBuildDate><atom:link href="https://gimmetm.github.com/tags/k8s/" rel="self" type="application/rss+xml" /><item>
     <title>Vue App Runtime에 환경변수 전달하기(k8s configmap)</title>
-    <link>http://gimmetm.github.com/posts/vuejs_k8s_configmap/</link>
+    <link>https://gimmetm.github.com/posts/vuejs_k8s_configmap/</link>
     <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
     <author>gimmetm</author>
-    <guid>http://gimmetm.github.com/posts/vuejs_k8s_configmap/</guid>
+    <guid>https://gimmetm.github.com/posts/vuejs_k8s_configmap/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="/images/vuejs.png" referrerpolicy="no-referrer">
             </div><p>기존에 배포 버전별로 이미지를 생성(config 변수를 이미지 안에 저장) 하던 프로젝트를,
@@ -16,20 +16,20 @@
 vue.env에서 configmap으로 옮기는 방법입니다.</p>]]></description>
 </item><item>
     <title>Open Policy Agent</title>
-    <link>http://gimmetm.github.com/posts/open_policy_agent/</link>
+    <link>https://gimmetm.github.com/posts/open_policy_agent/</link>
     <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>
     <author>gimmetm</author>
-    <guid>http://gimmetm.github.com/posts/open_policy_agent/</guid>
+    <guid>https://gimmetm.github.com/posts/open_policy_agent/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="/images/opa-banner.png" referrerpolicy="no-referrer">
             </div><p>Object Storage와 RDB의 접근권한을 제어하는 서비스를 고도화 하기 위해
 CNCF 프로젝트 중 하나인 OPA(Open Policy Agent)에 대해 조사(구글 번역 후 실습)해 보았습니다.</p>]]></description>
 </item><item>
     <title>iTerm2에서 Tab 별로 다른 k8s context 사용하기</title>
-    <link>http://gimmetm.github.com/posts/iterm_tab_kubectx/</link>
+    <link>https://gimmetm.github.com/posts/iterm_tab_kubectx/</link>
     <pubDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</pubDate>
     <author>gimmetm</author>
-    <guid>http://gimmetm.github.com/posts/iterm_tab_kubectx/</guid>
+    <guid>https://gimmetm.github.com/posts/iterm_tab_kubectx/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="/images/kubectx-demo.gif" referrerpolicy="no-referrer">
             </div><p>Multi Kubernetes Cluster를 사용한다면 dev, staging등 다른 context를 전환하며 사용하는 경우가 있습니다.

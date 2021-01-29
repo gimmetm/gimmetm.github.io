@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>iTerm2 - Tag - Gimme™ Devlog</title>
-        <link>http://gimmetm.github.com/tags/iterm2/</link>
+        <link>https://gimmetm.github.com/tags/iterm2/</link>
         <description>iTerm2 - Tag - Gimme™ Devlog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/iterm2/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</lastBuildDate><atom:link href="https://gimmetm.github.com/tags/iterm2/" rel="self" type="application/rss+xml" /><item>
     <title>iTerm2에서 Tab 별로 다른 k8s context 사용하기</title>
-    <link>http://gimmetm.github.com/posts/iterm_tab_kubectx/</link>
+    <link>https://gimmetm.github.com/posts/iterm_tab_kubectx/</link>
     <pubDate>Thu, 21 Jan 2021 19:03:26 &#43;0900</pubDate>
     <author>gimmetm</author>
-    <guid>http://gimmetm.github.com/posts/iterm_tab_kubectx/</guid>
+    <guid>https://gimmetm.github.com/posts/iterm_tab_kubectx/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="/images/kubectx-demo.gif" referrerpolicy="no-referrer">
             </div><p>Multi Kubernetes Cluster를 사용한다면 dev, staging등 다른 context를 전환하며 사용하는 경우가 있습니다.
