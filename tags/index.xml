@@ -3,19 +3,33 @@
         <title>Tags - Tag - Gimme™ Devlog</title>
         <link>http://gimmetm.github.com/tags/</link>
         <description>Tags - Tag - Gimme™ Devlog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>configmap</title>
+    <link>http://gimmetm.github.com/tags/configmap/</link>
+    <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
+    <author>Author</author>
+    <guid>http://gimmetm.github.com/tags/configmap/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>k8s</title>
+    <link>http://gimmetm.github.com/tags/k8s/</link>
+    <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
+    <author>Author</author>
+    <guid>http://gimmetm.github.com/tags/k8s/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>vue.js</title>
+    <link>http://gimmetm.github.com/tags/vue.js/</link>
+    <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
+    <author>Author</author>
+    <guid>http://gimmetm.github.com/tags/vue.js/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>cncf</title>
     <link>http://gimmetm.github.com/tags/cncf/</link>
     <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>
     <author>Author</author>
     <guid>http://gimmetm.github.com/tags/cncf/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>k8s</title>
-    <link>http://gimmetm.github.com/tags/k8s/</link>
-    <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>
-    <author>Author</author>
-    <guid>http://gimmetm.github.com/tags/k8s/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>policy</title>
@@ -58,20 +72,6 @@
     <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>
     <author>Author</author>
     <guid>http://gimmetm.github.com/tags/github.io/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>hugo</title>
-    <link>http://gimmetm.github.com/tags/hugo/</link>
-    <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>http://gimmetm.github.com/tags/hugo/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>webstorm</title>
-    <link>http://gimmetm.github.com/tags/webstorm/</link>
-    <pubDate>Wed, 20 Jan 2021 20:00:26 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>http://gimmetm.github.com/tags/webstorm/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>

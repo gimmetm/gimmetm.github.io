@@ -3,7 +3,18 @@
         <title>k8s - Tag - Gimme™ Devlog</title>
         <link>http://gimmetm.github.com/tags/k8s/</link>
         <description>k8s - Tag - Gimme™ Devlog</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/k8s/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</lastBuildDate><atom:link href="http://gimmetm.github.com/tags/k8s/" rel="self" type="application/rss+xml" /><item>
+    <title>Vue App Runtime에 환경변수 전달하기(k8s configmap)</title>
+    <link>http://gimmetm.github.com/posts/vuejs_k8s_configmap/</link>
+    <pubDate>Fri, 29 Jan 2021 15:55:19 &#43;0900</pubDate>
+    <author>gimmetm</author>
+    <guid>http://gimmetm.github.com/posts/vuejs_k8s_configmap/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/images/vuejs.png" referrerpolicy="no-referrer">
+            </div><p>기존에 배포 버전별로 이미지를 생성(config 변수를 이미지 안에 저장) 하던 프로젝트를,
+이미지를 단일화 하고 k8s configmap을 통해 변수를 활용하게 되었습니다.<br>
+vue.env에서 configmap으로 옮기는 방법입니다.</p>]]></description>
+</item><item>
     <title>Open Policy Agent</title>
     <link>http://gimmetm.github.com/posts/open_policy_agent/</link>
     <pubDate>Thu, 28 Jan 2021 09:26:36 &#43;0900</pubDate>

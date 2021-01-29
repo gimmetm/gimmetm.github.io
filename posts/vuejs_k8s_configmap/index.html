@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Vue App Runtime에 환경변수 전달하기(k8s configmap) | </title><meta name="Description" content="Gimme™"><meta property="og:title" content="Vue App Runtime에 환경변수 전달하기(k8s configmap)" />
+<meta property="og:description" content="기존에 배포 버전별로 이미지를 생성(config 변수를 이미지 안에 저장) 하던 프로젝트를,
+이미지를 단일화 하고 k8s configmap을 통해 변수를 활용하게 되었습니다.
+vue.env에서 configmap으로 옮기는 방법입니다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://gimmetm.github.com/posts/vuejs_k8s_configmap/" />
+<meta property="article:published_time" content="2021-01-29T15:55:19+09:00" />
+<meta property="article:modified_time" content="2021-01-29T15:55:19+09:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vue App Runtime에 환경변수 전달하기(k8s configmap)"/>
+<meta name="twitter:description" content="기존에 배포 버전별로 이미지를 생성(config 변수를 이미지 안에 저장) 하던 프로젝트를,
+이미지를 단일화 하고 k8s configmap을 통해 변수를 활용하게 되었습니다.
+vue.env에서 configmap으로 옮기는 방법입니다."/>
+<meta name="application-name" content="Gimme™ Devlog">
+<meta name="apple-mobile-web-app-title" content="Gimme™ Devlog"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://gimmetm.github.com/posts/vuejs_k8s_configmap/" /><link rel="prev" href="http://gimmetm.github.com/posts/open_policy_agent/" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K4E1B7WS7R"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-K4E1B7WS7R');
+</script><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><meta name="google-site-verification" content="67B8cTWJdEoiD4KHTR-iLxEVBtiy-Pi9H6J2_krPSiA" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Vue App Runtime에 환경변수 전달하기(k8s configmap)",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/gimmetm.github.com\/posts\/vuejs_k8s_configmap\/"
+        },"genre": "posts","keywords": "k8s, vue.js, configmap","wordCount":  173 ,
+        "url": "http:\/\/gimmetm.github.com\/posts\/vuejs_k8s_configmap\/","datePublished": "2021-01-29T15:55:19+09:00","dateModified": "2021-01-29T15:55:19+09:00","publisher": {
+            "@type": "Organization",
+            "name": "gimmetm"},"author": {
+                "@type": "Person",
+                "name": "gimmetm"
+            },"description": ""
+    }
+    </script><script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "http:\/\/gimmetm.github.com\/"
+        },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "k8s",
+            "item": "http://gimmetm.github.com/categories/k8s/"
+        },{
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Vue App Runtime에 환경변수 전달하기(k8s configmap)"
+            }]
+    }
+</script></head>
+    <body data-header-desktop="" data-header-mobile=""><script>(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Gimme™ Devlog" class="header-logo">Gimme™ Devlog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/games/"> Games </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Gimme™ Devlog" class="header-logo">Gimme™ Devlog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/games/" title="">Games</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+<script data-ad-client="ca-pub-3438372926222215" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="container content-article  theme-classic"><div class="toc" id="toc-auto">
+            <div class="toc-title">Contents</div>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><div class="header-post">
+        <div class="post-title">
+
+            <div class="post-all-meta">
+            <div class="breadcrumbs">
+    <a href="/">Home </a>/ <a href="/categories/k8s/">k8s </a>/ <a href="/"> Vue App Runtime에 환경변수 전달하기(k8s configmap) </a>
+</div>
+            <h1 class="single-title animated flipInX">Vue App Runtime에 환경변수 전달하기(k8s configmap)</h1><div class="post-meta">
+                <div class="post-meta-line"><span class="post-category">
+                                <a href="/categories/k8s/"><i class="far fa-folder fa-fw"></i>&nbsp;k8s</a>
+                            </span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time class="timeago" datetime="2021-01-29">2021-01-29</time>&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;173 words
+                    &nbsp;&nbsp;&nbsp;&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;One minute</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    </div>
+
+        <article class="single toc-start">
+
+        <div class="content-block content-block-first content-block-position">
+
+        <div class="post"><div class="image-theme-classic">
+                <img src="/images/vuejs.png" style="width: 100%">
+            </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-요약">0. 요약</a></li>
+    <li><a href="#1-config-파일-생성">1. Config 파일 생성</a>
+      <ul>
+        <li><a href="#publicconfigjs를-파일을-생성-합니다">public/config.js를 파일을 생성 합니다.</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-indexhtml-수정">2. index.html 수정</a>
+      <ul>
+        <li><a href="#publicindexhtml-수정">public/index.html 수정</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-eslint">3. ESLint</a>
+      <ul>
+        <li><a href="#31-eslintrcjs">3.1 .eslintrc.js</a></li>
+        <li><a href="#32-packagejson">3.2 package.json</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-config-적용">4. Config 적용</a></li>
+    <li><a href="#5-configmap">5. Configmap</a>
+      <ul>
+        <li><a href="#configmapyaml-생성-or-configjs-추가">configmap.yaml 생성 or config.js 추가</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-deployment">6. Deployment</a>
+      <ul>
+        <li><a href="#deploymentyaml-수정">deployment.yaml 수정</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav></div>
+            </div><p>기존에 배포 버전별로 이미지를 생성(config 변수를 이미지 안에 저장) 하던 프로젝트를,
+이미지를 단일화 하고 k8s configmap을 통해 변수를 활용하게 되었습니다.<br>
+vue.env에서 configmap으로 옮기는 방법입니다.</p>
+<h2 id="0-요약">0. 요약</h2>
+<ul>
+<li>configmap에 변수를 리턴하는 config.js 파일을 저장</li>
+<li>config.js 을 web root 디렉토리에 마운트</li>
+<li>index.html에서 config.js를 로드하여 global 변수로 사용</li>
+</ul>
+<h2 id="1-config-파일-생성">1. Config 파일 생성</h2>
+<h3 id="publicconfigjs를-파일을-생성-합니다">public/config.js를 파일을 생성 합니다.</h3>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="s2">&#34;VUE_CONFIG_APP_API&#34;</span><span class="o">:</span> <span class="s2">&#34;...&#34;</span><span class="p">,</span>
+  <span class="p">};</span>
+<span class="p">})();</span>
+</code></pre></div><h2 id="2-indexhtml-수정">2. index.html 수정</h2>
+<h3 id="publicindexhtml-수정">public/index.html 수정</h3>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"> <span class="c">&lt;!-- docker configurable variables --&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;&lt;%= BASE_URL %&gt;config.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div><h2 id="3-eslint">3. ESLint</h2>
+<p>.eslintrc.js나 package.json의 eslintConfig 수정</p>
+<h3 id="31-eslintrcjs">3.1 .eslintrc.js</h3>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript">  <span class="nx">globals</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">config</span><span class="o">:</span> <span class="s2">&#34;readable&#34;</span><span class="p">,</span>
+  <span class="p">},</span>
+</code></pre></div><h3 id="32-packagejson">3.2 package.json</h3>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json">  <span class="s2">&#34;eslintConfig&#34;</span><span class="err">:</span> <span class="p">{</span>
+    <span class="nt">&#34;globals&#34;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&#34;config&#34;</span><span class="p">:</span> <span class="s2">&#34;readable&#34;</span>
+    <span class="p">}</span>
+  <span class="p">}</span><span class="err">,</span>
+</code></pre></div><h2 id="4-config-적용">4. Config 적용</h2>
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kr">export</span> <span class="kr">const</span> <span class="nx">actions</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="kr">async</span> <span class="nx">LoadUsers</span><span class="p">({</span> <span class="nx">dispatch</span> <span class="p">})</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kr">await</span> <span class="nx">dispatch</span><span class="p">(</span>
+      <span class="s2">&#34;axios/get&#34;</span><span class="p">,</span>
+      <span class="p">{</span>
+        <span class="nx">url</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">VUE_CONFIG_APP_API</span> <span class="o">+</span> <span class="s2">&#34;User/List&#34;</span><span class="p">,</span>
+      <span class="p">},</span>
+      <span class="p">{</span> <span class="nx">root</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span>
+    <span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div><h2 id="5-configmap">5. Configmap</h2>
+<h3 id="configmapyaml-생성-or-configjs-추가">configmap.yaml 생성 or config.js 추가</h3>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fe-config</span><span class="w">
+</span><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">...</span><span class="w">
+</span><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">config.js</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span><span class="sd">    var config = (() =&gt; {
+</span><span class="sd">      return {
+</span><span class="sd">        &#34;VUE_CONFIG_APP_API&#34;: &#34;...&#34;,
+</span><span class="sd">      };
+</span><span class="sd">    })();</span><span class="w">    
+</span></code></pre></div><h2 id="6-deployment">6. Deployment</h2>
+<h3 id="deploymentyaml-수정">deployment.yaml 수정</h3>
+<p>Volume에 Configmap을 추가하고, Volumemount에 config.js를 web root에 추가합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="l">...</span><span class="w">
+</span><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="l">...</span><span class="w">
+</span><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="l">...</span><span class="w">
+</span><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">config-volume</span><span class="w">
+</span><span class="w">          </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">fe-config</span><span class="w">
+</span><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- <span class="l">...</span><span class="w">
+</span><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span><span class="w">                </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">config-volume</span><span class="w">
+</span><span class="w">                  </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/nginx/html/config.js</span><span class="w">
+</span><span class="w">                  </span><span class="nt">subPath</span><span class="p">:</span><span class="w"> </span><span class="l">config.js</span><span class="w">
+</span></code></pre></div><h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://stackoverflow.com/questions/53010064/pass-environment-variable-into-a-vue-app-at-runtime" target="_blank" rel="noopener noreffer">Pass environment variable into a Vue App at runtime</a></li>
+</ul></div>
+
+            <div class="post"><div class="post-info-share">
+    <span></span>
+</div>
+<div class="footer-post-author">
+    <div class="author-avatar"><a href="https://gimmetm.github.io" target="_blank"><img alt="" src="https://s.gravatar.com/avatar/dce7da4ea9af357a735a6eeef75b0025?s=80" border="0"></a></div>
+    <div class="author-info">
+        <div class="name"><a href="https://gimmetm.github.io" target="_blank">MINGYUM KIM</a></div>
+        <div class="number-posts">Cloud App. Modernization(MSA), Indie Game Developer</span></div>
+    </div>
+</div><div class="footer-donate">
+    <div>AWS GCP k8s java go js c# unity </div>
+</div><div class="post-footer" id="post-footer"><div class="post-navigation"><div class="post-nav-box nav-box-prev">
+            <a class="nav-box" href="/posts/open_policy_agent/"><span class="nav-icon"><svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zM142.1 273l135.5 135.5c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L226.9 256l101.6-101.6c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L142.1 239c-9.4 9.4-9.4 24.6 0 34z"></path></svg></span><div style="text-align: right;padding-left: 10px"><div class="nav-text-h">Next article</div><span class="nav-text">Open Policy Agent</span></div></a>
+        </div></div></div>
+</div>
+        </div>
+    <div id="toc-final"></div>
+    </article><div class=" post-tags post-tags-toc "><a href="/tags/k8s/" class="tag">k8s</a><a href="/tags/vue.js/" class="tag">vue.js</a><a href="/tags/configmap/" class="tag">configmap</a></div><div class="page single comments content-block-position"><div id="comments"><div id="utterances"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://utteranc.es/">Utterances</a>.
+            </noscript></div></div></div></main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.80.0">Hugo</a> | Theme - <a href="https://ublogger.netlify.app/?utm_source=http://gimmetm.github.com/&utm_medium=footer&utm_campaign=config&utm_term=1.2.0" target="_blank" title="uBlogger 1.2.0"><i class="fas fa-pencil-alt fa-fw"></i> uBlogger</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span>2021</span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/lightgallery/lightgallery.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><script src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script src="/lib/lazysizes/lazysizes.min.js"></script><script src="/lib/lightgallery/lightgallery.min.js"></script><script src="/lib/lightgallery/lg-thumbnail.min.js"></script><script src="/lib/lightgallery/lg-zoom.min.js"></script><script src="/lib/clipboard/clipboard.min.js"></script><script src="/lib/sharer/sharer.min.js"></script><script src="/lib/katex/katex.min.js"></script><script src="/lib/katex/auto-render.min.js"></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{"utterances":{"darkTheme":"github-dark","issueTerm":"pathname","label":"","lightTheme":"github-light","repo":"gimmetm/gimmetm.github.io"}},"lightGallery":{"actualSize":false,"exThumbImage":"data-thumbnail","hideBarsDelay":2000,"selector":".lightgallery","speed":400,"thumbContHeight":80,"thumbWidth":80,"thumbnail":true},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script src="/js/theme.min.js"></script><script src="/js/jquery-3.5.1.min.js"></script></body>
+</html>
